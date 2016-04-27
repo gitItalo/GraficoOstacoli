@@ -1,6 +1,7 @@
 import pygame
 import math
-        
+from PIL import Image
+
 width = 1000
 height = 1000
 
@@ -21,6 +22,34 @@ verticeDx1=[200,20]
     
 verticeSx2=[700,490]
 verticeDx2=[150,20]
+def collisione(q,p,z):
+    Qx=q[0];Qy=q[1]
+    Px=p[0];Py=p[1]
+    Zx=z[0];Zy=z[1]
+    return (Py-Qy)*Zx+(Qx-Px)*Zy+(Px*Qy-Qx*Py) >= 0
+def verificaintersezioni(lista3punti,Z):
+    A = lista3punti[0]
+    B = lista3punti[1]
+    C = lista3punti[2]
+    Avalid = collisione(A,B,Z)
+    Bvalid = collisione(B,C,Z)
+    Cvalid = collisione(C,A,Z)
+    return Avalid and Bvalid and Cvalid
+def controllotriangoli(triangolo1,triangolo2):
+    A = triangolo2[0]
+    B = triangolo2[1]
+    C = triangolo2[2]
+    verifica1 = verificaintersezioni(triangolo1,A)
+    verifica2 = verificaintersezioni(triangolo1,B)
+    verifica3 = verificaintersezioni(triangolo1,C)
+    D = triangolo1[0]
+    E = triangolo1[1]
+    F = triangolo1[2]
+    verifica4 = verificaintersezioni(triangolo2,D)
+    verifica5 = verificaintersezioni(triangolo2,E)
+    verifica6 = verificaintersezioni(triangolo2,F)
+    return verifica1 or verifica2 or verifica3 or verifica4 or verifica5 or verifica6
+    
 def grafica():
     global verticeSx1, verticeDx2,verticeDx1,verticeSx2
     
@@ -65,32 +94,66 @@ def rectVertex(point, la, lb, lc, ld, rot):
 def braccio1():
     global b1
     pygame.draw.polygon(screen,(255,255,0),rectVertex((500,500),200,10,0,10,b1),1)
+    
 def braccio2():
     global b2
     pygame.draw.polygon(screen,(255,0,255),rectVertex(circlepos(math.radians(b1), 200, (500, 500)),150,10,0,10,b2),1)
-    
-        
+def primobraccio():
+    global b1
+    a,b,c,d = rectVertex((500,500),200,10,0,10,b1)
+    triangolo1=[a,b,c]
+    triangolo2=[a,d,c]
+    return triangolo1,triagolo2
+def secondobraccio():
+    global b2
+    a,b,c,d = rectVertex(circlepos(math.radians(b1), 200, (500, 500)),150,10,0,10,b2)    
+    triangolo1=[a,b,c]
+    triangolo2=[a,d,c]
+    return triangolo1,triagolo2    
 #======================================
 
-
+jpg = Image.new("RGB",(360,360))
 
 done = False
+x=0
+y=0
+ostacolo1 = [[550,300],[550,350],[500,325]]
+ostacolo2 = [[200,500],[200,550],[150,525]]
+ostacolo3 = [[0,800],[1000,800],[1000,1000]]
+ostacolo4 = [[0,800],[0,1000],[1000,1000]]
 try:
     while not done:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
-        screen.fill((0,0,0))                    
-        movimento()
-        grafica()
-        braccio2()
-        b2 -= 1
-        if b2 < 0:
-            b2 = 360
-            b1 -= 1
-        braccio1()
-        ostacoli()
-        pygame.display.update()
-        clock.tick(300)
+        for y in range(359):
+            screen.fill((0,0,0))                    
+            movimento()
+            grafica()
+            braccio2()
+            triangolo1,triangolo2 = secondobraccio()
+            b2 -= 1
+            if b2 < 0:
+                b2 = 360
+                b1 -= 1
+            braccio1()
+            triangolo3,triangolo4 = primobraccio()
+            ostacoli()
+            pygame.display.update()
+            clock.tick(300)
+            for x in range(359):
+                if (controllotriangoli(triangolo1,ostacolo1) or controllotriangoli(triangolo1,ostacolo2) or controllotriangoli(triangolo1,ostacolo3) or
+                    controllotriangoli(triangolo1,ostacolo4) or controllotriangoli(triangolo2,ostacolo1) or controllotriangoli(triangolo2,ostacolo2) or
+                    controllotriangoli(triangolo2,ostacolo3) or controllotriangoli(triangolo2,ostacolo4) or controllotriangoli(triangolo3,ostacolo1) or
+                    controllotriangoli(triangolo3,ostacolo2) or controllotriangoli(triangolo3,ostacolo3) or controllotriangoli(triangolo3,ostacolo4) or
+                    controllotriangoli(triangolo4,ostacolo1) or controllotriangoli(triangolo4,ostacolo2) or controllotriangoli(triangolo4,ostacolo3) or
+                    controllotriangoli(triangolo4,ostacolo4)):
+                       jpg.putpixel((x,y),(255,255,255))
+        
+        
+
+
+    
 finally:
     pygame.quit()
+    jpg.show()
