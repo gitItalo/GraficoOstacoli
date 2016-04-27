@@ -122,33 +122,29 @@ ostacolo2 = [[200,500],[200,550],[150,525]]
 ostacolo3 = [[0,800],[1000,800],[1000,1000]]
 ostacolo4 = [[0,800],[0,1000],[1000,1000]]
 try:
-    while not done:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                done = True
-        for y in range(359):
-            screen.fill((0,0,0))                    
-            movimento()
-            grafica()
-            braccio2()
-            triangolo1,triangolo2 = secondobraccio()
-            b2 -= 1
-            if b2 < 0:
-                b2 = 360
-                b1 -= 1
-            braccio1()
-            triangolo3,triangolo4 = primobraccio()
-            ostacoli()
-            pygame.display.update()
-            clock.tick(300)
-            for x in range(359):
-                if (controllotriangoli(triangolo1,ostacolo1) or controllotriangoli(triangolo1,ostacolo2) or controllotriangoli(triangolo1,ostacolo3) or
-                    controllotriangoli(triangolo1,ostacolo4) or controllotriangoli(triangolo2,ostacolo1) or controllotriangoli(triangolo2,ostacolo2) or
-                    controllotriangoli(triangolo2,ostacolo3) or controllotriangoli(triangolo2,ostacolo4) or controllotriangoli(triangolo3,ostacolo1) or
-                    controllotriangoli(triangolo3,ostacolo2) or controllotriangoli(triangolo3,ostacolo3) or controllotriangoli(triangolo3,ostacolo4) or
-                    controllotriangoli(triangolo4,ostacolo1) or controllotriangoli(triangolo4,ostacolo2) or controllotriangoli(triangolo4,ostacolo3) or
-                    controllotriangoli(triangolo4,ostacolo4)):
-                       jpg.putpixel((x,y),(255,255,255))
+    for y in range(359):
+        screen.fill((0,0,0))                    
+        movimento()
+        grafica()
+        braccio2()
+        triangolo1,triangolo2 = secondobraccio()
+        b2 -= 1
+        if b2 < 0:
+            b2 = 360
+            b1 -= 1
+        braccio1()
+        triangolo3,triangolo4 = primobraccio()
+        ostacoli()
+        pygame.display.update()
+        clock.tick(300)
+        for x in range(359):
+            if (controllotriangoli(triangolo1,ostacolo1) or controllotriangoli(triangolo1,ostacolo2) or controllotriangoli(triangolo1,ostacolo3) or
+                controllotriangoli(triangolo1,ostacolo4) or controllotriangoli(triangolo2,ostacolo1) or controllotriangoli(triangolo2,ostacolo2) or
+                controllotriangoli(triangolo2,ostacolo3) or controllotriangoli(triangolo2,ostacolo4) or controllotriangoli(triangolo3,ostacolo1) or
+                controllotriangoli(triangolo3,ostacolo2) or controllotriangoli(triangolo3,ostacolo3) or controllotriangoli(triangolo3,ostacolo4) or
+                controllotriangoli(triangolo4,ostacolo1) or controllotriangoli(triangolo4,ostacolo2) or controllotriangoli(triangolo4,ostacolo3) or
+                controllotriangoli(triangolo4,ostacolo4)):
+                   jpg.putpixel((x,y),(255,255,255))
         
         
 
