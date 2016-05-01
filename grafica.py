@@ -40,15 +40,26 @@ def controllotriangoli(triangolo1,triangolo2):
     B = triangolo2[1]
     C = triangolo2[2]
     verifica1 = verificaintersezioni(triangolo1,A)
+    if verifica1:
+        return verifica1
     verifica2 = verificaintersezioni(triangolo1,B)
+    if verifica2:
+        return verifica2
     verifica3 = verificaintersezioni(triangolo1,C)
+    if verifica3:
+        return verifica3
     D = triangolo1[0]
     E = triangolo1[1]
     F = triangolo1[2]
     verifica4 = verificaintersezioni(triangolo2,D)
+    if verifica4:
+        return verifica4
     verifica5 = verificaintersezioni(triangolo2,E)
+    if verifica5:
+        return verifica5
     verifica6 = verificaintersezioni(triangolo2,F)
-    return verifica1 or verifica2 or verifica3 or verifica4 or verifica5 or verifica6
+    if verifica6:
+        return verifica6
     
 def grafica():
     global verticeSx1, verticeDx2,verticeDx1,verticeSx2
@@ -103,26 +114,26 @@ def primobraccio():
     a,b,c,d = rectVertex((500,500),200,10,0,10,b1)
     triangolo1=[a,b,c]
     triangolo2=[a,d,c]
-    return triangolo1,triagolo2
+    return triangolo1,triangolo2
 def secondobraccio():
     global b2
     a,b,c,d = rectVertex(circlepos(math.radians(b1), 200, (500, 500)),150,10,0,10,b2)    
     triangolo1=[a,b,c]
     triangolo2=[a,d,c]
-    return triangolo1,triagolo2    
+    return triangolo1,triangolo2    
 #======================================
 
 jpg = Image.new("RGB",(360,360))
-
-done = False
 x=0
 y=0
+done = False
+
 ostacolo1 = [[550,300],[550,350],[500,325]]
 ostacolo2 = [[200,500],[200,550],[150,525]]
 ostacolo3 = [[0,800],[1000,800],[1000,1000]]
 ostacolo4 = [[0,800],[0,1000],[1000,1000]]
 try:
-    for y in range(359):
+    while True:
         screen.fill((0,0,0))                    
         movimento()
         grafica()
@@ -137,17 +148,21 @@ try:
         ostacoli()
         pygame.display.update()
         clock.tick(300)
-        for x in range(359):
-            if (controllotriangoli(triangolo1,ostacolo1) or controllotriangoli(triangolo1,ostacolo2) or controllotriangoli(triangolo1,ostacolo3) or
-                controllotriangoli(triangolo1,ostacolo4) or controllotriangoli(triangolo2,ostacolo1) or controllotriangoli(triangolo2,ostacolo2) or
-                controllotriangoli(triangolo2,ostacolo3) or controllotriangoli(triangolo2,ostacolo4) or controllotriangoli(triangolo3,ostacolo1) or
-                controllotriangoli(triangolo3,ostacolo2) or controllotriangoli(triangolo3,ostacolo3) or controllotriangoli(triangolo3,ostacolo4) or
-                controllotriangoli(triangolo4,ostacolo1) or controllotriangoli(triangolo4,ostacolo2) or controllotriangoli(triangolo4,ostacolo3) or
-                controllotriangoli(triangolo4,ostacolo4)):
-                   jpg.putpixel((x,y),(255,255,255))
+        if (controllotriangoli(triangolo1,ostacolo1) or controllotriangoli(triangolo1,ostacolo2) or controllotriangoli(triangolo1,ostacolo3) or
+            controllotriangoli(triangolo1,ostacolo4) or controllotriangoli(triangolo2,ostacolo1) or controllotriangoli(triangolo2,ostacolo2) or
+            controllotriangoli(triangolo2,ostacolo3) or controllotriangoli(triangolo2,ostacolo4) or controllotriangoli(triangolo3,ostacolo1) or
+            controllotriangoli(triangolo3,ostacolo2) or controllotriangoli(triangolo3,ostacolo3) or controllotriangoli(triangolo3,ostacolo4) or
+            controllotriangoli(triangolo4,ostacolo1) or controllotriangoli(triangolo4,ostacolo2) or controllotriangoli(triangolo4,ostacolo3) or
+            controllotriangoli(triangolo4,ostacolo4)):
+               jpg.putpixel((x,y),(255,0,0))
+               print(x,y)
+        x+=1
+        if x == 359:
+            x=0
+            y+=1
+            if y == 359:
+                break
         
-        
-
 
     
 finally:
